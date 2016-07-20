@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Pet2you Test Plan" verbose="1">
+	
+	<test name="Functional Tests" preserve-order="true">
+		<parameter name="firstUserName" value="Ирина"/>
+		<parameter name="firstUserSoname" value="Садовская"/>
+		<parameter name="firstUserEmail" value="sadowsckaia.i@yandex.ru"/>
+		<parameter name="firstUserPassword" value="456_123_78"/>
+		<parameter name="secondUserName" value="Виктор"/>
+		<parameter name="secondUserSoname" value="Михальченко"/>
+		<parameter name="secondUserEmail" value="mihalchencko.victor@yandex.ru"/>
+		<parameter name="secondUserPassword" value="123_456_78"/>
+		<parameter name="message" value="Это тестовое сообщение"/>
+
+		<classes>
+ 			<class name="pet2you.tests.AccountRecoveryTest" />
+        </classes>
+	</test>
+</suite>
