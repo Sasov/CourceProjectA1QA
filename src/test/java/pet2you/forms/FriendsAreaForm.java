@@ -42,7 +42,7 @@ public class FriendsAreaForm extends BaseForm {
                 browser.waitForPageToLoad();
                 AccountForm friendAccount = new AccountForm(userNameAndSoname);
                 friendAccount.confirmFriendship();
-
+                browser.waitForPageToLoad();
             }
         }
     }
@@ -85,5 +85,6 @@ public class FriendsAreaForm extends BaseForm {
                 friendsButton.clickAndWait();
             }
         }
+        browser.waitForPageToLoad();
     }
 }

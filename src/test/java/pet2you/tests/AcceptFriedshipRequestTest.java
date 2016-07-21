@@ -13,7 +13,6 @@ public class AcceptFriedshipRequestTest extends Pet2youBaseTest {
 
     public void runTest() throws InterruptedException {
 
-        String firstUserNameAndSurname = firstUserName + " " + firstUserSoname;
         String secondUserNameAndSurname = secondUserName + " " + secondUserSoname;
 
         logger.step(1);
