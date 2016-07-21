@@ -13,11 +13,11 @@
 		<parameter name="message" value="Это тестовое сообщение"/>
 
 		<classes>
- 			<class name="pet2you.tests.AccountRecoveryTest" />
+			<class name="pet2you.tests.AccountRecoveryTest" />
 			<class name="pet2you.tests.FriedshipRequestTest" />
 			<class name="pet2you.tests.AcceptFriedshipRequestTest" />
 			<class name="pet2you.tests.SendMessageTest" />
-			<class name="pet2you.tests.TakeAndDeleteMessageTest" />
+			<class name="pet2you.tests.TakeMessageTest" />
 			<class name="pet2you.tests.TerminationFriendshipTest" />
         </classes>
 	</test>

@@ -1,7 +1,10 @@
 package pet2you.forms;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import webdriver.BaseForm;
 import webdriver.elements.Button;
 import webdriver.elements.ElementCollection;
@@ -15,40 +18,48 @@ public class FriendsSearchForm extends BaseForm {
 
     private TextBox friendsSearchInput = new TextBox(By.id("search-main-input"), "Friend search line");
     private Button friendsSearchSubmit = new Button(By.id("search-submit"), "Friends search submit button");
-    private Label showAllusers = new Label(By.xpath("//div[contains(text(),'Перейти ко всем найденым пользователям')]"), "Show all found users");
-    private Label uiMessageSendRequest = new Label(By.xpath("//div[contains(text(),'Запрос отправлен')]"));
+    private Label showAllUsers = new Label(By.xpath("//div[contains(text(),'Перейти ко всем найденым пользователям')]"), "Show all found users");
     private Button confirmFriendshipRequest = new Button(By.xpath("//div[contains(text(),'Запрос отправлен')]/following-sibling::div//button[span[contains(text(),'Ok')]]"), "Press Ok");
-    private Label uiMessageAlreadySendRequest = new Label(By.xpath("//div[contains(text(),'Вы уже послали приглашение дружить')]"));
     private Button confirmAlreadySendFriendshipRequest = new Button(By.xpath("//div[contains(text(),'Вы уже послали приглашение дружить')]/following-sibling::div//button[span[contains(text(),'Ok')]]"), "Press Ok");
     private Label uiDialog = new Label(By.xpath("//div[contains(@class,'ui-dialog')]"), "Modal Dialog");
 
     public FriendsSearchForm() {
-        super(By.xpath("//.[contains(text(),'Расширенный поиск')]"), "Friends search form");
+        super(By.id("search-main-input"), "Friends search form");
     }
 
     public void searchAndAddFriend(String userName, String userSoname){
         String userNameAndSoname = userName + " " + userSoname;
         friendsSearchInput.type(userName);
         friendsSearchSubmit.clickAndWait();
-        if (showAllusers.isPresent()){
-            showAllusers.clickAndWait();
+        if (showAllUsers.isPresent()){
+            showAllUsers.clickAndScriptWait();
         }
-        browser.scrollToElement(By.className("copyright"));
         ElementCollection foundUsers = new ElementCollection(By.xpath("//div[@class=\"user-block\"]//div[contains(@class,'name')]/a[position()=1]"), "All found users");
         int collectionSize = foundUsers.getCollectionSize();
         for (int i=0; i<collectionSize; i++){
             WebElement user = foundUsers.getElement(i);
             String userNameFromCollection = user.getText();
             if (userNameFromCollection.contains(userNameAndSoname)){
-                Button addFriend = new Button(By.xpath("//.[contains(text(),'" + userNameAndSoname + "')]/ancestor::div[1]/following-sibling::div//a[@original-title=\"Добавить в друзья\"]"), "Add Friend " + userNameAndSoname + " Button");
-                addFriend.clickAndExplicitWait(uiDialog.getLocator());
-                doAssert(uiMessageSendRequest.isPresent(),"Confirmation message \"Запрос отправлен\" is present on page","Confirmation message \"Запрос отправлен\" are not present on page");
+                clickOffset(user, 55, 77);
+                browser.explicitWait(uiDialog.getLocator());
                 confirmFriendshipRequest.click();
-                addFriend.clickAndExplicitWait(uiDialog.getLocator());
-                doAssert(uiMessageAlreadySendRequest.isPresent(),"Confirmation message \"Вы уже послали приглашение дружить\" is present on page","Confirmation message \"Вы уже послали приглашение дружить\" are not present on page");
+                clickOffset(user, 55, 77);
+                browser.explicitWait(uiDialog.getLocator());
+                doAssert(uiDialog.isPresent(),"Dialog \"Вы уже отправили приглашение\" is present","Dialog \"Вы уже отправили приглашение\" is absent");
                 confirmAlreadySendFriendshipRequest.click();
             }
         }
 
     }
+
+    protected void clickOffset (WebElement element, int xOffset, int yOffset){
+        WebDriver driver = browser.getDriver();
+        Actions actions = new Actions(driver);
+        actions.moveToElement(element, xOffset, yOffset).click();
+        Action hoverClick = actions.build();
+        hoverClick.perform();
+        browser.scriptWait();
+    }
+
+
 }

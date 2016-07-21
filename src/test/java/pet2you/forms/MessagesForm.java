@@ -13,7 +13,7 @@ public class MessagesForm extends BaseForm {
 
 
     public MessagesForm() {
-        super(By.xpath("//.[contains(text(),'Диалоги')]"), "Massages form");
+        super(By.id("header-message-container"), "Massages form");
     }
 
     public void navigateToDialog(String message){
@@ -26,6 +26,7 @@ public class MessagesForm extends BaseForm {
                 info("Dialog with message \"" + message + "\" founded in dialog list");
                 dialog.click();
                 browser.waitForPageToLoad();
+                break;
             }
         }
     }

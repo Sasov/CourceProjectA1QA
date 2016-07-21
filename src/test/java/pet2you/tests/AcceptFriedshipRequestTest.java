@@ -36,8 +36,6 @@ public class AcceptFriedshipRequestTest extends Pet2youBaseTest {
         friendsAreaForm.assertFriendshipRequests();
         friendsAreaForm.confirmFriendship(firstUserName, firstUserSoname);
 
-        logger.step(7);
-        friendsAreaForm.assertFriend(firstUserNameAndSurname);
 
     }
 }

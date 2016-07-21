@@ -12,7 +12,7 @@ public class NewsPageForm extends BaseForm {
     private Button profile = new Button(By.xpath("//div[@id=\"left-menu-container\"]/a[contains(text(),\"Профиль\")]"), "Profile Button");
 
     public NewsPageForm() {
-        super(By.xpath("//h6[contains(text(),'Новости')]"), "News Page Form");
+        super(By.xpath("//a[@href=\"/ru/news\"]"), "News Page Form");
     }
 
     public void clickProfile(){

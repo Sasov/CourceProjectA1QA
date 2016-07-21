@@ -8,7 +8,7 @@ import pet2you.forms.MessagesForm;
 /**
  * Created by mikola on 20.07.2016.
  */
-public class TakeAndDeleteMessageTest extends Pet2youBaseTest {
+public class TakeMessageTest extends Pet2youBaseTest {
 
 
     public void runTest() throws InterruptedException {
@@ -40,10 +40,5 @@ public class TakeAndDeleteMessageTest extends Pet2youBaseTest {
         logger.step(8);
         dialogForm.checkLastMessage(message);
 
-        logger.step(9);
-        dialogForm.deleteLastMessage();
-
-        logger.step(10);
-        dialogForm.checkDeleteMessage(message);
     }
 }

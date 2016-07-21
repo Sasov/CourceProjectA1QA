@@ -13,15 +13,11 @@ import webdriver.elements.Label;
 public class FriendsAreaForm extends BaseForm {
 
     private Button addFriends = new Button(By.id("UserFriendsWidget_AddFriends"), "Add Friends");
-    private Label friendshipRequestsHeader = new Label(By.xpath("//.[contains(text(),'Запросы на дружбу')]"));
-    private Label uiDialog = new Label(By.xpath("//div[contains(@class,'ui-dialog')]"), "Modal Dialog");
-    private Label uiMessageDeleteFriendConfirm = new Label(By.xpath("//div[contains(text(),'Вы уверены, что хотите удалить друга?')]"));
-    private Button confirmDeleteFriend = new Button(By.xpath("//div[contains(text(),'Вы уверены, что хотите удалить друга?')]/following-sibling::div//button[span[contains(text(),'Да')]]"), "Press Ok");
-    private Label uiMessageDeleteFriendDone = new Label(By.xpath("//div[contains(text(),'Вы больше не друзья')]"));
-    private Button pressOk = new Button(By.xpath("//div[contains(text(),'Вы больше не друзья')]/following-sibling::div//button[span[contains(text(),'Ok')]]"), "Press Ok");
+    private Label friendshipRequestsWrapper = new Label(By.id("friend-invite-list"), "Friendship request");
+    private Button friendsButton = new Button(By.xpath("//div[@id=\"left-menu-container\"]/a[contains(text(),\"Друзья\")]"), "Friends Button");
 
     public FriendsAreaForm() {
-        super(By.xpath("//.[contains(text(),'Мои друзья')]"), "Friends area form");
+        super(By.xpath("//div[@id=\"UserFriendsWidget_AddFriends\"]"), "Friends area form");
     }
 
     public void addFriend(String userName, String userSoname){
@@ -31,47 +27,63 @@ public class FriendsAreaForm extends BaseForm {
     }
 
     public void assertFriendshipRequests(){
-        doAssert(friendshipRequestsHeader.isPresent(),"Friendship requests are present on page","Friendship requests are not present on page");
+        doAssert(friendshipRequestsWrapper.isPresent(),"Friendship requests are present on page","Friendship requests are not present on page");
     }
 
     public void confirmFriendship(String userName, String userSoname){
         String userNameAndSoname = userName + " " + userSoname;
-        browser.scrollToElement(By.id("copyright"));
-        assertFriendshipRequests();
         ElementCollection friendshipRequests = new ElementCollection(By.xpath("//div[contains(@class,'friend row messages')]/div[3]//a"), "Friends requests list");
         int collectionSize = friendshipRequests.getCollectionSize();
         for (int i=0; i<collectionSize; i++){
             WebElement friendshipRequest = friendshipRequests.getElement(i);
             String displayedName = friendshipRequest.getText();
             if (displayedName.contains(userName)){
-                Button confirmFriendshipRequest = new Button(By.xpath("//.[contains(text(),'" + userName + "')]/ancestor::div[1]//following-sibling::div//.[contains(text(),'Подтвердить дружбу')]"),"Confirm friendship request");
-                assertFriend(userNameAndSoname);
+                friendshipRequest.click();
+                browser.waitForPageToLoad();
+                AccountForm friendAccount = new AccountForm(userNameAndSoname);
+                friendAccount.confirmFriendship();
+
             }
         }
     }
 
-    public void assertFriend(String userNameAndSoname) {
-        browser.scrollToElement(By.id("copyright"));
-        Label friendOnPage = new Label(By.xpath("//div[@class=\"friends-list\"]//.[contains(text(),'" + userNameAndSoname + "')]"), "Friend on page");
-        doAssert(friendOnPage.isPresent(),"New friend are present in friends list","New friend are not present in friends list");
+    public void assertFriendAbsent(String userNameAndSoname) {
+        Label friendOnPage = new Label(By.xpath("//.[contains(text(),'" + userNameAndSoname + "')]"), "Friend on page");
+        doAssert(!friendOnPage.isPresent(),"Friend is absent friends list","Friend is present in friends list");
     }
 
     public void sendMessage(String userName, String userSoname, String message){
         String userNameAndSoname = userName + " " + userSoname;
-        assertFriend(userNameAndSoname);
-        Button sendMessage = new Button(By.xpath("//.[contains(text(),'" + userNameAndSoname + "')]/ancestor::div[1]/following-sibling::div//a[@original-title=\"Написать сообщение\"]"),"Send message button");
-        sendMessage.clickAndWait();
-        DialogForm dialog = new DialogForm();
+        ElementCollection friends = new ElementCollection(By.xpath("//div[contains(@id,'block_friend')]/div[2]/a"), "Friends list");
+        int collectionSize = friends.getCollectionSize();
+        for (int i=0; i<collectionSize; i++) {
+            WebElement friend = friends.getElement(i);
+            String displayedName = friend.getText();
+            if (displayedName.contains(userNameAndSoname)) {
+                friend.click();
+                browser.waitForPageToLoad();
+                AccountForm friendAccount = new AccountForm(userNameAndSoname);
+                friendAccount.writeMessage();
+                DialogForm dialog = new DialogForm();
+                dialog.sendMessage(message);
+            }
+        }
     }
 
     public void deleteFriend(String userName, String userSoname){
         String userNameAndSoname = userName + " " + userSoname;
-        assertFriend(userNameAndSoname);
-        Button deleteFriend = new Button(By.xpath("//.[contains(text(),'" + userNameAndSoname + "')]/ancestor::div[1]/following-sibling::div//a[@original-title=\"Удалить из друзей\"]"),"Delete friend button");
-        deleteFriend.clickAndExplicitWait(uiDialog.getLocator());
-        doAssert(uiMessageDeleteFriendConfirm.isPresent(),"Confirm delete friend message is present","Confirm delete friend message is not present");
-        confirmDeleteFriend.clickAndExplicitWait(uiDialog.getLocator());
-        doAssert(uiMessageDeleteFriendDone.isPresent(),"Delete friend message is present","Delete friend message is not present");
-        pressOk.click();
+        ElementCollection friends = new ElementCollection(By.xpath("//div[contains(@id,'block_friend')]/div[2]/a"), "Friends list");
+        int collectionSize = friends.getCollectionSize();
+        for (int i=0; i<collectionSize; i++) {
+            WebElement friend = friends.getElement(i);
+            String displayedName = friend.getText();
+            if (displayedName.contains(userNameAndSoname)) {
+                friend.click();
+                browser.waitForPageToLoad();
+                AccountForm friendAccount = new AccountForm(userNameAndSoname);
+                friendAccount.deleteFriend();
+                friendsButton.clickAndWait();
+            }
+        }
     }
 }

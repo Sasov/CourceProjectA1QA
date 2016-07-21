@@ -13,6 +13,8 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
@@ -258,6 +260,7 @@ public abstract class BaseElement extends BaseEntity {
 		click();
 		browser.explicitWait(loc);
 	}
+
 
 	public void tipe(String string){
 		tipe(string);

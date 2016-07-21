@@ -17,7 +17,7 @@ public class DialogForm extends BaseForm {
     private Button lastMessageDelete = new Button(By.xpath("(//div[contains(@class,'delete-message')])[last()]"), "Last message delete");
 
     public DialogForm() {
-        super(By.xpath("//.[contains(text(),'Мои сообщения')]"), "Dialog form");
+        super(By.xpath("//div[@id=\"MessagesPageWidget_input\"]//div[@contenteditable=\"true\"]"), "Dialog form");
     }
 
     public void sendMessage(String message){

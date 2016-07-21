@@ -2,15 +2,17 @@ package webdriver;
 
 import static webdriver.Logger.getLoc;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import javax.naming.NamingException;
 
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -201,12 +203,22 @@ public final class Browser {
 		((JavascriptExecutor) driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
 	}
 
+	public void shoot(String filename) {
+		File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+		try {
+			FileUtils.copyFile(screenshot, new File(filename));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void scrollToElement(By loc){
 		WebElement element = driver.findElement(loc);
 			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView();", element);
 		scriptWait();
 	}
-	
+
+
 	/**
 	 * maximizes the window
 	 * <p>
@@ -320,11 +332,5 @@ public final class Browser {
 	}
 
 	
-	
-	
-	
 
-	
-	
-	
 }

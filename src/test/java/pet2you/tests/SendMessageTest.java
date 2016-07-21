@@ -2,6 +2,7 @@ package pet2you.tests;
 
 import pet2you.forms.AccountForm;
 import pet2you.forms.DialogForm;
+import pet2you.forms.FriendsAreaForm;
 import pet2you.forms.MainForm;
 
 /**
@@ -23,12 +24,11 @@ public class SendMessageTest extends Pet2youBaseTest {
         accountForm.clickFriends();
 
         logger.step(3);
-        DialogForm dialogForm = new DialogForm();
+        FriendsAreaForm friendsAreaForm = new FriendsAreaForm();
+        friendsAreaForm.sendMessage(secondUserName, secondUserSoname, message);
 
         logger.step(4);
-        dialogForm.sendMessage(message);
-
-        logger.step(5);
+        DialogForm dialogForm = new DialogForm();
         dialogForm.checkLastMessage(message);
     }
 }

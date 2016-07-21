@@ -46,6 +46,7 @@ public abstract class Pet2youBaseTest extends BaseTest {
 
     @AfterClass
     public void after() {
+
         AccountForm accountFormForExit = new AccountForm();
         accountFormForExit.logout();
         if (browser.isBrowserAlive()) {

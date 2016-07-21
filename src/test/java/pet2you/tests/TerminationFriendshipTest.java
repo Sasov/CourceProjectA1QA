@@ -29,9 +29,10 @@ public class TerminationFriendshipTest extends Pet2youBaseTest {
         FriendsAreaForm friendsAreaForm = new FriendsAreaForm();
 
         logger.step(5);
-        friendsAreaForm.assertFriend(secondUserNameAndSurname);
+        friendsAreaForm.deleteFriend(secondUserName, secondUserSoname);
 
         logger.step(6);
-        friendsAreaForm.deleteFriend(secondUserName, secondUserSoname);
+        FriendsAreaForm friendsAreaFormAfterDelete = new FriendsAreaForm();
+        friendsAreaFormAfterDelete.assertFriendAbsent(secondUserNameAndSurname);
     }
 }

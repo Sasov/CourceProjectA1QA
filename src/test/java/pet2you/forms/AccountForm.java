@@ -17,6 +17,9 @@ public class AccountForm extends BaseForm {
     private Button logout = new Button(By.xpath("//div[@id=\"settings-hidden-container\"]//a[contains(text(),'Выход')]"), "Logout Button");
     private Label newFriendsIndicator = new Label(By.id("MymainmenuWidget_friends_count"), "New friends indicator");
     private Label newMessageIndicator = new Label(By.id("MymainmenuWidget_messages_count"), "New message indicator");
+    private Button confirmFriendship = new Button(By.xpath("//a[contains(@class, 'AddfriendWidget_button')]"), "Confirm Friendship");
+    private Button sendMessage = new Button(By.xpath("//div[contains(text(), 'Написать сообщение')]"), "Confirm Friendship");
+    private Button deleteFriend = new Button(By.xpath("//a[contains(text(), 'Удалить из друзей')]"), "Terminate Friendship");
 
 
     public AccountForm(String userNameAndSurname) {
@@ -24,7 +27,7 @@ public class AccountForm extends BaseForm {
     }
 
     public AccountForm(){
-        super(By.xpath("//img[contains(@class,'AvatarOnMain')]"),"Return to account form for exit");
+        super(By.xpath("//img[contains(@id,'header-ava')]"),"Return to account form for exit");
     }
 
     public AccountForm(String formlocator, String formTitle) {
@@ -57,4 +60,17 @@ public class AccountForm extends BaseForm {
     public void clickMassages(){
         messages.clickAndWait();
     }
+
+    public void confirmFriendship(){
+        confirmFriendship.clickAndScriptWait();
+    }
+
+    public void writeMessage(){
+        sendMessage.clickAndScriptWait();
+    }
+
+    public void deleteFriend(){
+        deleteFriend.clickAndScriptWait();
+    }
+
 }

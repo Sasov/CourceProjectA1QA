@@ -3,7 +3,6 @@ package pet2you.forms;
 import org.openqa.selenium.By;
 import webdriver.BaseForm;
 import webdriver.elements.Button;
-import webdriver.elements.Label;
 import webdriver.elements.TextBox;
 
 /**
@@ -34,10 +33,8 @@ public class MainForm extends BaseForm {
 
     public void userRecovery(String userEmail, String userPassword, String userNameAndSurname){
         enterLoginData(userEmail, userPassword);
-        Label disabledUser = new Label(By.xpath("//.[contains(text(),'Страница пользователя удалена. Информация недоступна.')]"), "Disabled user notification");
-        Button userRecovery = new Button(By.xpath("//a[contains(text(),'Восстановить страницу')]"), "User Recovery");
-        doAssert(disabledUser.isPresent(),"Disabled user notification is present","Disabled user notification is absent");
-        userRecovery.clickAndWait();
+        AccountDisabledForm accountDisabledForm = new AccountDisabledForm();
+        accountDisabledForm.userRecovery();
         NewsPageForm newsPage = new NewsPageForm();
         newsPage.clickProfile();
         AccountForm userAccount = new AccountForm(userNameAndSurname);
